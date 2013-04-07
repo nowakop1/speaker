@@ -12,7 +12,7 @@ public class MenuPanel extends JPanel {
 	 */
 	public MenuPanel() {		
 		JButton startButton = new JButton("start");
-		JButton exitButton = new JButton("wyjœcie");
+		JButton exitButton = new JButton("wyjscie");
 		
 		add(startButton);
 		add(exitButton);
