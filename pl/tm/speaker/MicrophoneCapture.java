@@ -74,7 +74,7 @@ public class MicrophoneCapture extends JFrame{
 		getContentPane().add(btnPanel);
 		getContentPane().setLayout(new FlowLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(300, 120);
+		setSize(500, 500);
 		setVisible(true);
 	}//end of constructor
 	
@@ -117,7 +117,7 @@ public class MicrophoneCapture extends JFrame{
 				audioFile = new File("junk.snd");
 			}else if (waveBtn.isSelected()){
 				fileType = AudioFileFormat.Type.WAVE;
-				audioFile = new File("junk.wave");
+				audioFile = new File("junk.wav");
 			}
 			try {
 				targetDataLine.open(audioformat);

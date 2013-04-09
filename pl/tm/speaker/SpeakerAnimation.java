@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 public class SpeakerAnimation {
 
 	private JFrame frame;
+	
+	private SamplingGraph sg = new SamplingGraph();
 
 	/**
 	 * Launch the application.
@@ -28,10 +30,11 @@ public class SpeakerAnimation {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(0, 0, 410, 400);
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		frame.getContentPane().add(BorderLayout.WEST, new AnimationPanel());
-		frame.getContentPane().add(BorderLayout.EAST, new MenuPanel());
+		frame.getContentPane().add(BorderLayout.NORTH, new MenuPanel(sg));
+		frame.getContentPane().add(BorderLayout.SOUTH, sg);
 	}
 }
