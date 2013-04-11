@@ -24,7 +24,7 @@ public class MenuPanel extends JPanel {
 	private TargetDataLine targetDataLine;
 	final JButton captureBtn = new JButton("Capture");
 	final JButton stopBtn = new JButton("Stop");
-	
+		
 	private SamplingGraph sg;
 	
 	/**
@@ -54,7 +54,7 @@ public class MenuPanel extends JPanel {
 						targetDataLine.stop();
 						targetDataLine.close();
 						
-				        sg.createAudioInputStream(new File("junk.wav"), true);
+						sg.createAudioInputStream(new File("junk.wav"), true);
 					}
 				}
 			);

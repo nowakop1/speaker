@@ -29,15 +29,19 @@ class SamplingGraph extends JPanel {
     Color jfcBlue = new Color(204, 204, 255);
     Vector lines = new Vector();
     
+    
     private File file;
 	private String fileName;
 	private AudioInputStream audioInputStream;
+	
+	private AnimationPanel ap;
     
     double duration;   
     
     String errStr;
 
-    public SamplingGraph() {
+    public SamplingGraph(AnimationPanel ap) {
+    	this.ap = ap;
     	setPreferredSize(new Dimension(400, 300));
         setBackground(new Color(20, 20, 20));
     }
@@ -71,6 +75,8 @@ class SamplingGraph extends JPanel {
     }
 
     public void createWaveForm(byte[] audioBytes) {
+    	
+    	double [] audioValues;
 
         lines.removeAllElements();  // clear the old vector
 
@@ -125,22 +131,33 @@ class SamplingGraph extends JPanel {
                  }
              }
         }
-           
-        int frames_per_pixel = audioBytes.length / format.getFrameSize()/w;
+        
+        audioValues = new double [w];
+                           
+        int frames_per_pixel = audioBytes.length / format.getFrameSize() / w;
         byte my_byte = 0;
+        byte my_byte_last = 0;
         double y_last = 0;
         int numChannels = format.getChannels();
+        int i = 0;
         for (double x = 0; x < w && audioData != null; x++) {
+        	//System.out.println(x);
             int idx = (int) (frames_per_pixel * numChannels * x);
             if (format.getSampleSizeInBits() == 8) {
                  my_byte = (byte) audioData[idx];
             } else {
                  my_byte = (byte) (128 * audioData[idx] / 32768 );
             }
+            //System.out.println(my_byte);
             double y_new = (double) (h * (128 - my_byte) / 256);
             lines.add(new Line2D.Double(x, y_last, x, y_new));
+            audioValues[i] = Math.abs(my_byte - my_byte_last);
             y_last = y_new;
+            my_byte_last = my_byte;
+            i++;
         }
+        
+        ap.setAudioValues(audioValues);
 
         repaint();
     }

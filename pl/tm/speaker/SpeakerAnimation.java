@@ -8,7 +8,8 @@ public class SpeakerAnimation {
 
 	private JFrame frame;
 	
-	private SamplingGraph sg = new SamplingGraph();
+	private SamplingGraph sg;
+	private AnimationPanel ap = new AnimationPanel();
 
 	/**
 	 * Launch the application.
@@ -34,7 +35,9 @@ public class SpeakerAnimation {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		sg = new SamplingGraph(ap);
 		frame.getContentPane().add(BorderLayout.NORTH, new MenuPanel(sg));
-		frame.getContentPane().add(BorderLayout.SOUTH, sg);
+		frame.getContentPane().add(BorderLayout.SOUTH, ap);
+		ap.start();
 	}
 }
