@@ -38,6 +38,7 @@ public class SpeakerAnimation {
 		sg = new SamplingGraph(ap);
 		frame.getContentPane().add(BorderLayout.NORTH, new MenuPanel(sg));
 		frame.getContentPane().add(BorderLayout.SOUTH, ap);
+		//frame.getContentPane().add(BorderLayout.CENTER, sg);
 		ap.start();
 	}
 }

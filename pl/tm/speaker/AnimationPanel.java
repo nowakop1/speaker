@@ -19,7 +19,7 @@ public class AnimationPanel extends JPanel implements Runnable{
 	
 	//private BufferedImage img;
 	private List<BufferedImage> imgList = new ArrayList<BufferedImage>();
-	private double[] imgValues = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 100};
+	private double[] imgValues = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 1000};
 	private double [] audioValues;
 	
 	int totalPictures = 11;
@@ -85,7 +85,7 @@ public class AnimationPanel extends JPanel implements Runnable{
 				} else {
 					//System.out.println(audioValues[position] + " " + imgValues[current]);
 					while(audioValues[position] > imgValues[current]) {
-						//System.out.println(audioValues[position] + " " + current);
+						System.out.println(audioValues[position]); //+ " " + current);
 						current++;
 					}
 					
@@ -95,7 +95,7 @@ public class AnimationPanel extends JPanel implements Runnable{
 					catch (InterruptedException e) { }
 				}
 				position += 10;
-				System.out.println(position);
+				//System.out.println(position);
 				current = 0;
 			}
 		}		

@@ -2,7 +2,11 @@ package pl.tm.speaker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -69,6 +73,7 @@ public class MenuPanel extends JPanel {
 			DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioformat);
 			targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
 			new CaptureThread().start();
+			//new DrawThread().start();
 		}catch (Exception e){
 			e.printStackTrace();
 			System.exit(0);
@@ -85,7 +90,9 @@ public class MenuPanel extends JPanel {
 	}
 	
 	class CaptureThread extends Thread {
-		public void run(){
+		
+		public void run(){//OutputStream rawOut){
+			//DataOutputStream out = new DataOutputStream(new BufferedOutputStream(rawOut));
 			AudioFileFormat.Type fileType = null;
 			File audioFile = null;
 			fileType = AudioFileFormat.Type.WAVE;
@@ -95,10 +102,19 @@ public class MenuPanel extends JPanel {
 				targetDataLine.open(audioformat);
 				targetDataLine.start();
 				AudioSystem.write(new AudioInputStream(targetDataLine), fileType, audioFile);
+				/*AudioSystem.write(new AudioInputStream(targetDataLine), fileType, out);
+				out.flush();
+				out.close();*/
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 		}
 	}
-
+	
+	class DrawThread extends Thread {
+		
+		public void run(InputStream rawIn){
+			sg.createAudioInputStream( rawIn );
+		}
+	}
 }

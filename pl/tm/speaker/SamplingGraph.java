@@ -12,6 +12,7 @@ import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.awt.geom.Line2D;
 import java.io.File;
+import java.io.InputStream;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.util.Vector;
@@ -65,6 +66,11 @@ class SamplingGraph extends JPanel {
         } else {
             reportStatus("Audio file required.");
         }
+    }
+    
+    public void createAudioInputStream( InputStream inputstream ) {
+    	audioInputStream = new AudioInputStream(inputstream, new AudioFormat(8000.0F, 16, 1, true, false), 16000);//set another length)
+    	
     }
     
     private void reportStatus(String msg) {
