@@ -36,7 +36,6 @@ public class SpeakerAnimation {
 		
 		frame.getContentPane().add(BorderLayout.NORTH, new MenuPanel(ap));
 		frame.getContentPane().add(BorderLayout.SOUTH, ap);
-		//frame.getContentPane().add(BorderLayout.CENTER, sg);
 		ap.start();
 	}
 }

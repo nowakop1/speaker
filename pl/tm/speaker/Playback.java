@@ -1,8 +1,6 @@
 package pl.tm.speaker;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -11,7 +9,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
 
-public class Playback  extends Thread {
+public class Playback implements Runnable {
 	
 	private AnimationPanel ap;
 	
@@ -26,6 +24,8 @@ public class Playback  extends Thread {
 	
 	private double avg;
 	private double prev_avg;
+	
+	Thread runner;
 	
 	public Playback(AnimationPanel ap) {
 		this.ap = ap;
@@ -48,15 +48,26 @@ public class Playback  extends Thread {
 		    DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
 		    sourceDataLine = (SourceDataLine)AudioSystem.getLine(dataLineInfo);
 		    
-		    this.start();
+		    start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void run() {
-		super.run();
-		
+	public void start() {
+		if (runner == null) {
+			runner = new Thread(this);
+			runner.start();
+		}
+	}
+	
+	public void stop() {
+		if (runner != null) {
+			runner = null;
+		}
+	}
+	
+	public void run() {		
 		playBuffer = new byte[bytesPerSecond / 500];
 		
 		try {
@@ -64,7 +75,6 @@ public class Playback  extends Thread {
 			sourceDataLine.start();
 		      
 			int cnt;
-			int n;
 			avg = 0;
 			prev_avg = 0;
 			int nlengthInSamples = playBuffer.length / 2;
@@ -72,33 +82,31 @@ public class Playback  extends Thread {
 				
 			while((cnt = audioInputStream.read(playBuffer, 0, playBuffer.length)) != -1) {
 				if(cnt > 0){
-					n = sourceDataLine.write(playBuffer, 0, cnt);
-					//System.out.println(n);
+					sourceDataLine.write(playBuffer, 0, cnt);
 					prev_avg = avg;
 					
 					for (int i = 0; i < nlengthInSamples; i++) {
-	                     /* First byte is MSB (high order) */
-	                     int MSB = (int) playBuffer[2*i];
-	                     /* Second byte is LSB (low order) */
-	                     int LSB = (int) playBuffer[2*i+1];
-	                     a = MSB << 8 | (255 & LSB);
-	                     a = 128 * a / 32768;
-	                     avg += a;
-	                 }
-//					for(byte foo : playBuffer) {
-//						avg += foo;
-//					}
+						/* First byte is MSB (high order) */
+						int MSB = (int) playBuffer[2*i];
+						/* Second byte is LSB (low order) */
+						int LSB = (int) playBuffer[2*i+1];
+						a = MSB << 8 | (255 & LSB);
+						a = 128 * a / 32768;
+						avg += a;
+					}
+					
 					avg = avg / playBuffer.length;
 					avg = avg * 10;
 					ap.setAudioValues(Math.abs(avg - prev_avg));
 				}
-				//System.out.println(cnt);
 			}
 			
 			ap.setAudioValues(0);
 				
 			sourceDataLine.drain();
 			sourceDataLine.close();
+			
+			stop();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -2,11 +2,7 @@ package pl.tm.speaker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -16,9 +12,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
-import pl.tm.speaker.MicrophoneCapture.CaptureThread;
 
 public class MenuPanel extends JPanel {
 
@@ -29,17 +22,10 @@ public class MenuPanel extends JPanel {
 	final JButton captureBtn = new JButton("Capture");
 	final JButton stopBtn = new JButton("Stop");
 	
-	private AnimationPanel ap;
-		
-	//private SamplingGraph sg;
-	
 	/**
 	 * Create the panel.
 	 */
-	public MenuPanel(final AnimationPanel ap) {
-		//this.sg = sg;
-		this.ap = ap;
-		
+	public MenuPanel(final AnimationPanel ap) {		
 		final Playback playback = new Playback(ap);
 		
 		captureBtn.setEnabled(true);
@@ -63,7 +49,6 @@ public class MenuPanel extends JPanel {
 						targetDataLine.stop();
 						targetDataLine.close();
 						
-						//sg.createAudioInputStream(new File("junk.wav"), true);
 						playback.playAudio();
 					}
 				}
@@ -79,7 +64,6 @@ public class MenuPanel extends JPanel {
 			DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioformat);
 			targetDataLine = (TargetDataLine) AudioSystem.getLine(dataLineInfo);
 			new CaptureThread().start();
-			//new DrawThread().start();
 		}catch (Exception e){
 			e.printStackTrace();
 			System.exit(0);
@@ -97,8 +81,7 @@ public class MenuPanel extends JPanel {
 	
 	class CaptureThread extends Thread {
 		
-		public void run(){//OutputStream rawOut){
-			//DataOutputStream out = new DataOutputStream(new BufferedOutputStream(rawOut));
+		public void run(){
 			AudioFileFormat.Type fileType = null;
 			File audioFile = null;
 			fileType = AudioFileFormat.Type.WAVE;
@@ -108,19 +91,9 @@ public class MenuPanel extends JPanel {
 				targetDataLine.open(audioformat);
 				targetDataLine.start();
 				AudioSystem.write(new AudioInputStream(targetDataLine), fileType, audioFile);
-				/*AudioSystem.write(new AudioInputStream(targetDataLine), fileType, out);
-				out.flush();
-				out.close();*/
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 		}
 	}
-	
-//	class DrawThread extends Thread {
-//		
-//		public void run(InputStream rawIn){
-//			sg.createAudioInputStream( rawIn );
-//		}
-//	}
 }

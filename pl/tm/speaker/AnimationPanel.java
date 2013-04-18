@@ -17,15 +17,12 @@ public class AnimationPanel extends JPanel implements Runnable{
 
 	private static final long serialVersionUID = -8934973488257733142L;
 	
-	//private BufferedImage img;
 	private List<BufferedImage> imgList = new ArrayList<BufferedImage>();
-	private double[] imgValues = {10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 1000};
+	private double[] imgValues = {10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 1000000};
 	private double audioValues;
 	
 	int totalPictures = 11;
 	int current = 0;
-	int position = 0;
-	double value = 0.0;
 	
 	Thread runner;
 	int pause = 50;
@@ -43,7 +40,6 @@ public class AnimationPanel extends JPanel implements Runnable{
 		
 		Dimension dimension = new Dimension(100, 100);
 		setPreferredSize(dimension);
-		//setPreferredSize(new Dimension(200, 200));
 	}
 	
 	@Override
@@ -61,7 +57,6 @@ public class AnimationPanel extends JPanel implements Runnable{
 		imgWidth = imgList.get(current).getWidth();
 		imgHeight = imgList.get(current).getHeight();
 		
-//		System.out.println(current);
 		g2d.drawImage(imgList.get(current), (x - imgWidth) / 2, (y - imgHeight) / 2 , this);
 	}
 	
@@ -78,18 +73,12 @@ public class AnimationPanel extends JPanel implements Runnable{
 		while (runner == thisThread) {
 			repaint();
 			
-			if(audioValues != 0) {			
-				//System.out.println(audioValues[position] + " " + audioValues.length);
-				
+			if(audioValues != 0) {							
 				if(audioValues == 0) {
 					stop();
 				} else {
-					//System.out.println(audioValues[position] + " " + imgValues[current]);
-//					if(audioValues > imgValues[current])
-						System.out.println("TAK " + audioValues);
 					while(audioValues > imgValues[current]) {
 						current++;
-						//System.out.println(audioValues + " " + imgValues[current]);
 					}
 					
 					try {
@@ -97,8 +86,6 @@ public class AnimationPanel extends JPanel implements Runnable{
 					}
 					catch (InterruptedException e) { }
 				}
-				position += 10;
-				//System.out.println(position);
 				current = 0;
 			}
 		}		
@@ -107,7 +94,6 @@ public class AnimationPanel extends JPanel implements Runnable{
 	public void stop() {
 		if (runner != null) {
 			runner = null;
-			position = 0;
 		}
 	}
 
