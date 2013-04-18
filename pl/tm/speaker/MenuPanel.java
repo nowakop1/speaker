@@ -28,14 +28,19 @@ public class MenuPanel extends JPanel {
 	private TargetDataLine targetDataLine;
 	final JButton captureBtn = new JButton("Capture");
 	final JButton stopBtn = new JButton("Stop");
+	
+	private AnimationPanel ap;
 		
-	private SamplingGraph sg;
+	//private SamplingGraph sg;
 	
 	/**
 	 * Create the panel.
 	 */
-	public MenuPanel(final SamplingGraph sg) {
-		this.sg = sg;
+	public MenuPanel(final AnimationPanel ap) {
+		//this.sg = sg;
+		this.ap = ap;
+		
+		final Playback playback = new Playback(ap);
 		
 		captureBtn.setEnabled(true);
 		stopBtn.setEnabled(false);
@@ -58,7 +63,8 @@ public class MenuPanel extends JPanel {
 						targetDataLine.stop();
 						targetDataLine.close();
 						
-						sg.createAudioInputStream(new File("junk.wav"), true);
+						//sg.createAudioInputStream(new File("junk.wav"), true);
+						playback.playAudio();
 					}
 				}
 			);
@@ -111,10 +117,10 @@ public class MenuPanel extends JPanel {
 		}
 	}
 	
-	class DrawThread extends Thread {
-		
-		public void run(InputStream rawIn){
-			sg.createAudioInputStream( rawIn );
-		}
-	}
+//	class DrawThread extends Thread {
+//		
+//		public void run(InputStream rawIn){
+//			sg.createAudioInputStream( rawIn );
+//		}
+//	}
 }

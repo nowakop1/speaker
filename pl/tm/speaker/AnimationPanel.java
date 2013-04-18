@@ -19,8 +19,8 @@ public class AnimationPanel extends JPanel implements Runnable{
 	
 	//private BufferedImage img;
 	private List<BufferedImage> imgList = new ArrayList<BufferedImage>();
-	private double[] imgValues = {0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 1000};
-	private double [] audioValues;
+	private double[] imgValues = {10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 1000};
+	private double audioValues;
 	
 	int totalPictures = 11;
 	int current = 0;
@@ -61,6 +61,7 @@ public class AnimationPanel extends JPanel implements Runnable{
 		imgWidth = imgList.get(current).getWidth();
 		imgHeight = imgList.get(current).getHeight();
 		
+//		System.out.println(current);
 		g2d.drawImage(imgList.get(current), (x - imgWidth) / 2, (y - imgHeight) / 2 , this);
 	}
 	
@@ -77,16 +78,18 @@ public class AnimationPanel extends JPanel implements Runnable{
 		while (runner == thisThread) {
 			repaint();
 			
-			if(audioValues != null) {			
+			if(audioValues != 0) {			
 				//System.out.println(audioValues[position] + " " + audioValues.length);
 				
-				if(position == audioValues.length) {
+				if(audioValues == 0) {
 					stop();
 				} else {
 					//System.out.println(audioValues[position] + " " + imgValues[current]);
-					while(audioValues[position] > imgValues[current]) {
-						System.out.println(audioValues[position]); //+ " " + current);
+//					if(audioValues > imgValues[current])
+						System.out.println("TAK " + audioValues);
+					while(audioValues > imgValues[current]) {
 						current++;
+						//System.out.println(audioValues + " " + imgValues[current]);
 					}
 					
 					try {
@@ -108,7 +111,7 @@ public class AnimationPanel extends JPanel implements Runnable{
 		}
 	}
 
-	public void setAudioValues(double [] audioValues) {
+	public void setAudioValues(double audioValues) {
 		this.audioValues = audioValues;
 	}
 

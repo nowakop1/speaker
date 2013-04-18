@@ -162,9 +162,7 @@ class SamplingGraph extends JPanel {
             my_byte_last = my_byte;
             i++;
         }
-        
-        ap.setAudioValues(audioValues);
-
+       
         repaint();
     }
 
