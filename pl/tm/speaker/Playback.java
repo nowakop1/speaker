@@ -97,6 +97,8 @@ public class Playback implements Runnable {
 					
 					avg = avg / playBuffer.length;
 					avg = avg * 10;
+					if(Math.abs(avg - prev_avg) > 100)
+						avg = prev_avg;
 					ap.setAudioValues(Math.abs(avg - prev_avg));
 				}
 			}
